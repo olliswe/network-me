@@ -1,0 +1,5 @@
+export const LANDING = '/'
+export const LOGIN = '/login'
+export const REGISTER = '/register'
+export const JOBSEEKER_LANDING = '/jobseeker'
+export const EMPLOYER_LANDING = '/employer'
