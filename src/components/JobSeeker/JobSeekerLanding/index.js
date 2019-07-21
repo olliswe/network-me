@@ -4,9 +4,6 @@ import {connect} from "react-redux"
 import ButtonAppBar from '../JobSeekerNavbar'
 
 class JobSeekerLanding extends Component {
-    constructor(props) {
-      super(props);
-    }
 
    render(){
     return(

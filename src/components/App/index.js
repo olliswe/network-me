@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
 import * as ROUTES from '../../constants/routes'
+import * as ROLES from '../../constants/roles'
 
 import { Provider, connect } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
@@ -32,8 +33,7 @@ class RootContainerComponent extends Component {
       } else if (!this.props.auth.isAuthenticated) {
         return <Redirect to={ROUTES.LOGIN} />;
       } else {
-        let category = this.props.auth.user.category
-        if (category != "1"){
+        if (this.props.auth.role != ROLES.JOBSEEKER){
           return <Redirect to={ROUTES.EMPLOYER_LANDING} />;
         }
         return <ChildComponent {...props} />
@@ -49,8 +49,7 @@ class RootContainerComponent extends Component {
       } else if (!this.props.auth.isAuthenticated) {
         return <Redirect to={ROUTES.LOGIN}/>;
       } else {
-        let category = this.props.auth.user.category
-        if (category != "2"){
+        if (this.props.auth.role !== ROLES.EMPLOYER){
           return <Redirect to={ROUTES.JOBSEEKER_LANDING} />;
         }
         return <ChildComponent {...props} />
@@ -67,10 +66,12 @@ class RootContainerComponent extends Component {
         return <em>Loading...</em>;
       } 
       else if (this.props.auth.isAuthenticated)  {
-        if(this.props.auth.user.category=="1"){ 
+        console.log(this.props.auth.role)
+        if(this.props.auth.role === ROLES.JOBSEEKER){ 
           return <Redirect to={ROUTES.JOBSEEKER_LANDING} /> }
-          if(this.props.auth.user.category=="2"){
+        if(this.props.auth.role === ROLES.EMPLOYER){
           return <Redirect to={ROUTES.EMPLOYER_LANDING}/>}
+          
           return <Redirect to={ROUTES.LANDING}/>
       }
       else{
