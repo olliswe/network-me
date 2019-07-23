@@ -31,12 +31,9 @@ class RootContainerComponent extends Component {
     return <Route {...rest} render={props => {
       if (this.props.auth.isLoading) {
         return <em>Loading...</em>;
-      } else if (!this.props.auth.isAuthenticated) {
+      } else if (!this.props.auth.isAuthenticated || this.props.auth.role != ROLES.JOBSEEKER) {
         return <Redirect to={ROUTES.LOGIN} />;
       } else {
-        if (this.props.auth.role != ROLES.JOBSEEKER){
-          return <Redirect to={ROUTES.EMPLOYER_APP} />;
-        }
         return <ChildComponent {...props} />
       }
     }} /> 
@@ -47,12 +44,11 @@ class RootContainerComponent extends Component {
     return <Route {...rest} render={props => {
       if (this.props.auth.isLoading) {
         return <em>Loading...</em>;
-      } else if (!this.props.auth.isAuthenticated) {
+      } 
+      else if (!this.props.auth.isAuthenticated || this.props.auth.role !== ROLES.EMPLOYER ) {
         return <Redirect to={ROUTES.LOGIN}/>;
-      } else {
-        if (this.props.auth.role !== ROLES.EMPLOYER){
-          return <Redirect to={ROUTES.JOBSEEKER_APP} />;
-        }
+      } 
+      else {
         return <ChildComponent {...props} />
       }
     }} /> 

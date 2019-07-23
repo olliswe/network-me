@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {auth} from "../../../actions";
 import {connect} from "react-redux"
-import Nav from '../../Nav'
 
 class JobSeekerLanding extends Component {
 
