@@ -3,6 +3,7 @@ import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
 import * as ROUTES from '../../constants/routes'
 import * as ROLES from '../../constants/roles'
 
+
 import { Provider, connect } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
@@ -15,6 +16,7 @@ import EmployerLanding from "../Employer/EmployerLanding"
 import NotFound from "../Not Found";
 import Login from "../Login";
 import Register from "../Register"
+import Nav from "../Nav"
 
 let store = createStore(jobsApp, applyMiddleware(thunk));
 
@@ -86,6 +88,8 @@ class RootContainerComponent extends Component {
   render() {
     let {JobSeekerRoute, EmployerRoute, LoginRegisterRoute } = this;
     return (
+      <div>
+      <Nav role = {this.props.auth.role}/>
       <BrowserRouter>
         <Switch>
           <JobSeekerRoute exact path={ROUTES.JOBSEEKER_LANDING} component={JobSeekerLanding} />
@@ -95,6 +99,7 @@ class RootContainerComponent extends Component {
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
+      </div>
     );
   }
 }

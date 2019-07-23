@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {auth} from "../../../actions";
 import {connect} from "react-redux"
-import ButtonAppBar from '../JobSeekerNavbar'
+import Nav from '../../Nav'
 
 class JobSeekerLanding extends Component {
 
    render(){
     return(
     <div>
-        <ButtonAppBar/>
         <div>
           {this.props.user.email} (<a onClick={this.props.logout}>logout</a>)
         </div>
