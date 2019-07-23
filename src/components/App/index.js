@@ -11,12 +11,11 @@ import thunk from "redux-thunk";
 import {auth} from "../../actions";
 import jobsApp from "../../reducers";
 
-import JobSeekerLanding from "../JobSeeker/JobSeekerLanding";
-import EmployerLanding from "../Employer/EmployerLanding"
+import JobSeekerApp from "../JobSeeker/JobSeekerApp"
+import EmployerApp from "../Employer/EmployerApp"
 import NotFound from "../Not Found";
 import Login from "../Login";
 import Register from "../Register"
-import Nav from "../Nav"
 
 let store = createStore(jobsApp, applyMiddleware(thunk));
 
@@ -36,7 +35,7 @@ class RootContainerComponent extends Component {
         return <Redirect to={ROUTES.LOGIN} />;
       } else {
         if (this.props.auth.role != ROLES.JOBSEEKER){
-          return <Redirect to={ROUTES.EMPLOYER_LANDING} />;
+          return <Redirect to={ROUTES.EMPLOYER_APP} />;
         }
         return <ChildComponent {...props} />
       }
@@ -52,7 +51,7 @@ class RootContainerComponent extends Component {
         return <Redirect to={ROUTES.LOGIN}/>;
       } else {
         if (this.props.auth.role !== ROLES.EMPLOYER){
-          return <Redirect to={ROUTES.JOBSEEKER_LANDING} />;
+          return <Redirect to={ROUTES.JOBSEEKER_APP} />;
         }
         return <ChildComponent {...props} />
       }
@@ -70,9 +69,9 @@ class RootContainerComponent extends Component {
       else if (this.props.auth.isAuthenticated)  {
         console.log(this.props.auth.role)
         if(this.props.auth.role === ROLES.JOBSEEKER){ 
-          return <Redirect to={ROUTES.JOBSEEKER_LANDING} /> }
+          return <Redirect to={ROUTES.JOBSEEKER_APP} /> }
         if(this.props.auth.role === ROLES.EMPLOYER){
-          return <Redirect to={ROUTES.EMPLOYER_LANDING}/>}
+          return <Redirect to={ROUTES.EMPLOYER_APP}/>}
           
           return <Redirect to={ROUTES.LANDING}/>
       }
@@ -89,11 +88,11 @@ class RootContainerComponent extends Component {
     let {JobSeekerRoute, EmployerRoute, LoginRegisterRoute } = this;
     return (
       <div>
-      <Nav role = {this.props.auth.role}/>
+      {/* <Nav role={this.props.auth.role} user={this.props.auth.user}/> */}
       <BrowserRouter>
         <Switch>
-          <JobSeekerRoute exact path={ROUTES.JOBSEEKER_LANDING} component={JobSeekerLanding} />
-          <EmployerRoute exact path={ROUTES.EMPLOYER_LANDING}component={EmployerLanding}/>
+          <JobSeekerRoute path={ROUTES.JOBSEEKER_APP} component={JobSeekerApp} />
+          <EmployerRoute path={ROUTES.EMPLOYER_APP} component={EmployerApp}/>
           <LoginRegisterRoute exact path={ROUTES.REGISTER}component={Register} />
           <LoginRegisterRoute exact path={ROUTES.LOGIN} component={Login} />
           <Route component={NotFound} />

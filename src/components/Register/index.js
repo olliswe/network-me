@@ -72,16 +72,6 @@ class Register extends Component {
     : this.setState({firstName:'', lastName:''});
     }
 
-  // handleCategoryChange = event => {
-  //   this.setState({[event.target.name]:event.target.value})
-  //   console.log(event.target.value)
-  //   event.target.vale === '1' 
-  //   // ? this.setState({organization:''})
-  //   ? console.log('hello')
-  //   : 
-  //   // this.setState({firstName:'', lastName:''})
-  //   console.log('2')
-  // }  
 
   onSubmit = event => {
     event.preventDefault();
