@@ -1,0 +1,5 @@
+.ql-editor {
+    overflow-y: scroll;
+    resize: vertical;
+    min-height: 25vh;
+  }

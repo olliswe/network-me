@@ -8,6 +8,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import {auth} from "../../actions";
+import {connect} from "react-redux";
+
+
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,23 +25,32 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: 'auto',
+  },
 }));
 
-export default function JobSeekerNav(props) {
+function Nav(props) {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const [drawer, setDrawer] = React.useState(false)
+  const openMenu = Boolean(anchorEl);
 
-  function handleChange(event) {
-    setAuth(event.target.checked);
+  const toggleDrawer = (open) => event => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawer(open)
   }
 
-  function handleMenu(event) {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   }
 
-  function handleClose() {
+  const handleClose = () => {
     setAnchorEl(null);
   }
 
@@ -43,13 +58,19 @@ export default function JobSeekerNav(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
+          <IconButton edge="start" className={classes.menuButton} onClick={toggleDrawer(true)} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton>
+          <div
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+          >
+          <Drawer open={drawer} onClose={toggleDrawer(false)}>
+              {props.drawerList}
+          </Drawer>
+          </div>
           <Typography variant="h6" className={classes.title}>
-            JobSeeker Navigation
           </Typography>
-          {auth && (
             <div>
               <IconButton
                 aria-label="Account of current user"
@@ -72,17 +93,25 @@ export default function JobSeekerNav(props) {
                   vertical: 'top',
                   horizontal: 'right',
                 }}
-                open={open}
+                open={openMenu}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>{props.user.email}</MenuItem>
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={props.logout}>Logout</MenuItem>
               </Menu>
             </div>
-          )}
         </Toolbar>
       </AppBar>
     </div>
   );
 }
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(auth.logout()),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Nav)

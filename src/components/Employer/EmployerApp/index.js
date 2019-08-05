@@ -1,28 +1,35 @@
-import React, { Component } from 'react';
-import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
+import React, { useState } from 'react';
+import {Route, Switch,} from 'react-router-dom';
 import * as ROUTES from '../../../constants/routes'
 import EmployerLanding from '../EmployerLanding'
-import EmployerNav from '../EmployerNav'
+import Nav from '../../Nav'
 import {connect} from "react-redux";
 import NotFound from "../../Not Found";
+import EmployerDrawer from "../EmployerDrawer"
+import EmployerPost from "../EmployerPost"
+import EmployerJobs from "../EmployerJobs"
+import EmployerViewJob from "../EmployerViewJob"
+import EmployerViewApplication from "../EmployerViewApplication"
 
 
+const EmployerApp = (props) => {
 
-class EmployerApp extends Component {
-    render() {
       return (
       <div>    
-      <EmployerNav user={this.props.user}/>
-      <BrowserRouter>
+      <Nav drawerList={<EmployerDrawer/>}  user={props.user}  />
         <Switch>
-          <Route exact path={ROUTES.EMPLOYER_APP} component={EmployerLanding} />
+          <Route exact path={ROUTES.EMPLOYER_APP} component= {EmployerLanding}/>
+          <Route path={ROUTES.EMPLOYER_POST} component= {EmployerPost}/>
+          <Route path={ROUTES.EMPLOYER_JOBS} component={EmployerJobs}/>
+          <Route exact path={ROUTES.EMPLOYER_VIEW_JOB} component={EmployerViewJob}/>
+          <Route exact path={ROUTES.EMPLOYER_VIEW_APPLICATION} component={EmployerViewApplication}/>
           <Route component={NotFound} />
         </Switch>
-      </BrowserRouter>
       </div>
       )
-    }
   }
+
+  
 
   const mapStateToProps = state => {
     return {
@@ -30,4 +37,6 @@ class EmployerApp extends Component {
     }
   }
 
-  export default connect(mapStateToProps)(EmployerApp)
+
+
+  export default connect(mapStateToProps, null, null)(EmployerApp)

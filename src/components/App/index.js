@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
 import * as ROUTES from '../../constants/routes'
 import * as ROLES from '../../constants/roles'
@@ -16,6 +16,7 @@ import EmployerApp from "../Employer/EmployerApp"
 import NotFound from "../Not Found";
 import Login from "../Login";
 import Register from "../Register"
+
 
 let store = createStore(jobsApp, applyMiddleware(thunk));
 
@@ -83,13 +84,12 @@ class RootContainerComponent extends Component {
   render() {
     let {JobSeekerRoute, EmployerRoute, LoginRegisterRoute } = this;
     return (
-      <div>
-      {/* <Nav role={this.props.auth.role} user={this.props.auth.user}/> */}
+    <div>
       <BrowserRouter>
         <Switch>
           <JobSeekerRoute path={ROUTES.JOBSEEKER_APP} component={JobSeekerApp} />
           <EmployerRoute path={ROUTES.EMPLOYER_APP} component={EmployerApp}/>
-          <LoginRegisterRoute exact path={ROUTES.REGISTER}component={Register} />
+          <LoginRegisterRoute exact path={ROUTES.REGISTER} component={Register} />
           <LoginRegisterRoute exact path={ROUTES.LOGIN} component={Login} />
           <Route component={NotFound} />
         </Switch>

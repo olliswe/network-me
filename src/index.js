@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import 'typeface-roboto'
+import 'react-quill/dist/quill.snow.css'
+import './index.css'
+
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

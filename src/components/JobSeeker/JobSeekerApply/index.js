@@ -1,18 +1,17 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {auth} from "../../../actions";
 import {connect} from "react-redux"
 
+const JobSeekerApply = (props) => {
 
-const EmployerLanding = (props) => {
-
+    props.setPageName('View Jobs')
     
     return(
     <div>
-        <h2>Welcome to the Landing page</h2>
+        <h2>Welcome to the Application page</h2>
     </div>
     )
 }
-
 
 
 const mapStateToProps = state => {
@@ -27,4 +26,4 @@ const mapStateToProps = state => {
     }
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmployerLanding)
+export default connect(mapStateToProps, mapDispatchToProps)(JobSeekerApply)
