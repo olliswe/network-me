@@ -84,7 +84,6 @@ class RootContainerComponent extends Component {
   render() {
     let {JobSeekerRoute, EmployerRoute, LoginRegisterRoute } = this;
     return (
-    <div>
       <BrowserRouter>
         <Switch>
           <JobSeekerRoute path={ROUTES.JOBSEEKER_APP} component={JobSeekerApp} />
@@ -94,7 +93,6 @@ class RootContainerComponent extends Component {
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
-      </div>
     );
   }
 }

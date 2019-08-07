@@ -3,6 +3,7 @@ export const LOGIN = '/login'
 export const REGISTER = '/register'
 
 export const JOBSEEKER_APP = '/jobseeker'
+export const JOBSEEEKER_SEARCH = '/jobseeker/search'
 export const JOBSEEKER_APPLY = '/jobseeker/apply'
 
 

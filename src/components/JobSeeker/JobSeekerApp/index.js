@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import NotFound from "../../Not Found";
 import JobSeekerDrawer from "../JobSeekerDrawer"
 import JobSeekerApply from "../JobSeekerApply"
+import JobSeekerSearch from "../JobSeekerSearch"
 
 
 const JobSeekerApp = (props) => {
@@ -14,17 +15,17 @@ const JobSeekerApp = (props) => {
 
 
       return (
-      <div>    
-      <Nav drawerList={<JobSeekerDrawer/>}  user={props.user} 
-      />
+      <Fragment>    
+      <Nav drawerList={<JobSeekerDrawer/>}  user={props.user} />
         <Switch>
           <Route exact path={ROUTES.JOBSEEKER_APP}
            render={props => <JobSeekerLanding {...props} />}/>
            <Route path={ROUTES.JOBSEEKER_APPLY}
            render={props => <JobSeekerApply {...props} />}/>
+           <Route path={ROUTES.JOBSEEEKER_SEARCH} component={JobSeekerSearch}/>
           <Route component={NotFound} />
         </Switch>
-      </div>
+      </Fragment>
       )
   }
 
