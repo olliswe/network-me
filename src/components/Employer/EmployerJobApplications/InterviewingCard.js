@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { ArrowRight, ArrowLeft } from '@material-ui/icons';
 import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import {withRouter} from 'react-router';
+import {withRouter} from 'react-router-dom';
 
 
 
@@ -30,7 +30,7 @@ const InterviewingCard = (props) => {
             {props.application.author.first_name} {props.application.author.last_name}
           </Typography>
           <Typography variant="body1" color="textSecondary" component="p">
-            Applied {props.application.date} ago
+            Applied {props.application.timesince_applied} ago
           </Typography>
         </CardContent>
       </CardActionArea>

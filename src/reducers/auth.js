@@ -27,14 +27,14 @@ export default function auth(state=initialState, action) {
             return {...state, isLoading: true};
 
         case 'USER_LOADED':
-            console.log('hello')
-            console.log(rolesHelper(action.user.category))
             return {...state, isAuthenticated: true, role: rolesHelper(action.user.category), isLoading: false, user: action.user};
 
         case 'LOGIN_SUCCESSFUL':
+            localStorage.setItem("token", action.data.key);
+            return {...state, user:action.data.user, token:action.data.key, isAuthenticated: true, role: rolesHelper(action.data.user.category), isLoading: false, errors: null};
         case 'REGISTRATION_SUCCESSFUL':
-            localStorage.setItem("token", action.data.token);
-            return {...state, ...action.data, isAuthenticated: true, role: rolesHelper(action.data.user.category), isLoading: false, errors: null};
+            localStorage.setItem("token", action.data.key);
+            return {...state, user:action.data.user, token:action.data.key, isAuthenticated: true, role: rolesHelper(action.data.user.category), isLoading: false, errors: null};
 
         case 'AUTHENTICATION_ERROR':
             return{errors:action.data}

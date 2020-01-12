@@ -5,16 +5,39 @@ import {connect} from "react-redux"
 import {Typography, Grid, Box, InputBase, IconButton, Paper, Fab} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import {JOBSEEEKER_SEARCH} from '../../../constants/routes'
+import MostRecentPanel from './mostRecent'
+import MostPopularPanel from './mostPopular'
+import {useKeyPress} from '../../../utils'
 
 
 
 const JobSeekerLanding = (props) => {
 
 
-    const [searchTerm, setSearchTerm] = useState('')
+    const [searchTerm, setSearchTerm] = useState('');
+    const enterPress = useKeyPress('Enter');
+
+    useEffect(()=> {
+            if (enterPress) {
+                props.history.push({
+                    pathname: JOBSEEEKER_SEARCH,
+                    state: {searchTerm: searchTerm}
+                })
+            }
+        }
+        , [enterPress]
+    )
 
     const handleSearchTermChange = event => {
         setSearchTerm(event.target.value);
+    };
+
+    const handleAll = event => {
+        event.preventDefault();
+        props.history.push({
+            pathname: JOBSEEEKER_SEARCH,
+            state: { searchTerm : ''  }
+        })
     }
 
 
@@ -24,7 +47,9 @@ const JobSeekerLanding = (props) => {
         pathname: JOBSEEEKER_SEARCH,
         state: { searchTerm : searchTerm  }
       })
-    }
+    };
+
+
 
      
 
@@ -42,7 +67,7 @@ const JobSeekerLanding = (props) => {
 
 
     return(
-      <Grid container >
+      <Grid container>
         <Grid item xs={12}>
           <Box mt={5} ml={'15vw'}><Typography variant='h2' style={{color:'white'}} >Make your next move {props.user.first_name}</Typography></Box>
         </Grid>
@@ -73,15 +98,15 @@ const JobSeekerLanding = (props) => {
                 </Box>
               </Grid> 
               <Grid item md={5}  xs={12}>
-              <Fab variant='extended' size='large' color='primary'> View all Jobs </Fab>
+              <Fab variant='extended' size='large' color='primary' onClick={handleAll}> View all Jobs </Fab>
               </Grid> 
             </Grid>
             <Grid container  spacing={10} style={{width:'100%', marginTop:50}} justify = 'space-between'>
             <Grid item xs={12} md={6} justify='center'>
-              <Paper style={{width:'100%', height:'35vh'}}>Most recent job postings</Paper>
+              <MostRecentPanel/>
             </Grid>
             <Grid item xs={12} md={6} justify='center'>
-              <Paper style={{width:'100%', height:'35vh'}}>Popular job postings</Paper>
+              <MostPopularPanel/>
             </Grid>
             </Grid>
           </Box>

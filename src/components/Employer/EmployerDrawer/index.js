@@ -17,7 +17,7 @@ export default function EmployerDrawer(props) {
             <MenuItem component={Link} to={ROUTES.EMPLOYER_JOBS} >
               Job Positions
             </MenuItem>
-            <MenuItem component={Link} to='#' >
+            <MenuItem component={Link} to={ROUTES.EMPLOYER_INBOX} >
               Inbox
             </MenuItem>
           </MenuList>

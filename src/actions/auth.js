@@ -11,7 +11,7 @@ export const loadUser = () => {
       };
   
       if (token) {
-        headers["Authorization"] = `JWT ${token}`;
+        headers["Authorization"] = `Token ${token}`;
       }
       return fetch(API+"accounts/current_user/", {headers, })
         .then(res => {
@@ -42,9 +42,10 @@ export const loadUser = () => {
   export const login = (email, password) => {
     return (dispatch, getState) => {
       let headers = {"Content-Type": "application/json"};
-      let body = JSON.stringify({email, password});
+      let body = JSON.stringify({'username':email, 'password':password});
+      console.log(body)
   
-      return fetch(API+"accounts/auth/login/", {headers, body, method: "POST"})
+      return fetch(API+"api-token-auth/", {headers, body, method: "POST"})
         .then(res => {
           if (res.status < 500) {
             return res.json().then(data => {

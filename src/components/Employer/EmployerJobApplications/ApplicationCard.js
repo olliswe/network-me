@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter} from 'react-router';
+import {withRouter} from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { ArrowRight, ArrowLeft } from '@material-ui/icons';
 import Grid from '@material-ui/core/Grid';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-
 
 
 
@@ -28,7 +27,7 @@ const ApplicationCard = (props)  => {
             {props.application.author.first_name} {props.application.author.last_name}
           </Typography>
           <Typography variant="body1" color="textSecondary" component="p">
-            Applied {props.application.date} ago
+            Applied {props.application.timesince_applied} ago
           </Typography>
         </CardContent>
       </CardActionArea>

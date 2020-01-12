@@ -9,8 +9,17 @@ import {Link, withRouter} from 'react-router-dom'
 function JobSeekerDrawer(props) {
         return (
         <MenuList style={{width:250}}>
-              <MenuItem component={Link} to={ROUTES.JOBSEEKER_APPLY} >
+              <MenuItem component={Link} to={ROUTES.JOBSEEKER_APP} >
+                Home
+              </MenuItem>
+              <MenuItem component={Link} to={ROUTES.JOBSEEEKER_SEARCH} >
                 Apply
+              </MenuItem>
+              <MenuItem component={Link} to={ROUTES.JOBSEEKER_MY_APPS} >
+                My Applications
+              </MenuItem>
+              <MenuItem component={Link} to={ROUTES.JOBSEEKER_INBOX} >
+                Inbox
               </MenuItem>
           </MenuList>
         )

@@ -24,7 +24,7 @@ const OpenPositions = (props) => {
     useEffect( () => {
         setJobRequest({loading:true})
         let headers = {"Content-Type": "application/json",
-        "Authorization":`JWT ${props.token}`
+        "Authorization":`Token ${props.token}`
         };
         fetch(API+'employer/open', {headers, method:"GET"})
         .then(res => res.json())

@@ -74,12 +74,7 @@ const EmployerJobs =  (props) => {
 }
 
 
-const mapStateToProps = state => {
-    return {
-      user: state.auth.user,
-      token:state.auth.token
-    }
-  }
+
 
   
 export default EmployerJobs

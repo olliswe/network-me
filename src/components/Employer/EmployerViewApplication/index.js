@@ -1,11 +1,13 @@
 import React, {useState, useEffect, Fragment} from 'react';
-import {API} from '../../../constants/api'
+import {API, AWS_URL} from '../../../constants/api'
 import {connect} from 'react-redux'
 import {Container, Box, Paper, Grid, CircularProgress, Typography, Divider, Fab} from '@material-ui/core';
 import {Mail, Phone, AssignmentReturned, Sync} from '@material-ui/icons'
-import {withRouter} from 'react-router'
+import {withRouter} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import StatusButton from './statusButton'
+import * as ROUTES from '../../../constants/routes'
+
 
 
 
@@ -22,7 +24,7 @@ const EmployerViewApplication = (props) => {
 
     const getApplicationRequest = () => {
         let headers = {"Content-Type": "application/json",
-        "Authorization":`JWT ${props.token}`
+        "Authorization":`Token ${props.token}`
         };
         fetch(API+'employer/get_application/'+props.match.params.slug, {headers, method:"GET"})
         .then(res => res.json())
@@ -52,6 +54,14 @@ const EmployerViewApplication = (props) => {
                     <Typography style={{color:'white'}} variant='subtitle1'>
                                 Application for: <Link style={{color:'white'}} to={"/employer/job/"+applicationRequest.application.job.slug}>{applicationRequest.application.job.title }</Link>
                     </Typography>
+                    <Fab variant='extended'
+                    size='large'
+                    style={{background:'green', color:'white'}}
+                    onClick = {()=>{props.history.push(ROUTES.EMPLOYER_SEND_MESSAGE, {
+                        recipient:applicationRequest.application.author,
+                        job:applicationRequest.application.job
+                    })}}
+                    >Send Message&nbsp;&nbsp;<Mail/></Fab>
                     <StatusButton application ={applicationRequest.application} />
                     </Fragment>
                     }
@@ -71,7 +81,7 @@ const EmployerViewApplication = (props) => {
                             <Typography variant='h4'>
                             {applicationRequest.application.author.first_name} {applicationRequest.application.author.last_name}                    
                             </Typography>
-                        <a href={applicationRequest.application.cv} download style={{textDecoration:'none'}}>   
+                        <a href={AWS_URL+applicationRequest.application.cv} download style={{textDecoration:'none'}}>
                         <Fab variant='extended' color='success' size='large' style={{width:200}}>  <Box>Download CV</Box>&nbsp;  <AssignmentReturned color="white" style={{ fontSize: 30 }}/> </Fab>
                         </a> 
                         </Grid>
@@ -89,6 +99,22 @@ const EmployerViewApplication = (props) => {
                         <Grid item xs={12}>
                             <Typography  dangerouslySetInnerHTML={{__html:applicationRequest.application.cover_letter}}/>
                         </Grid>
+                        {
+                            applicationRequest.application.application_attachments &&
+
+                            <Fragment>
+                                <Grid item xs={12}>
+                                    <Typography variant='h6'>Application Attachments:</Typography>
+                                </Grid>
+
+                                {applicationRequest.application.application_attachments.map((attachment)=>
+                                <Grid item xs={12}>
+                                    <Typography><a href={AWS_URL+attachment.attachment} download
+                                                   target="_blank">{attachment.attachment}</a></Typography>
+                                </Grid>
+                                )}
+                            </Fragment>
+                        }
                 </Grid>
                     }
                 </Box>

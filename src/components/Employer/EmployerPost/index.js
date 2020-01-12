@@ -12,7 +12,6 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CheckIcon from '@material-ui/icons/Check';
 import ReactQuill from 'react-quill'
-import './index.css'
 import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -67,7 +66,7 @@ const EmployerPost = (props) => {
                  'employer':props.user.id
     }
       let headers = {"Content-Type": "application/json",
-                      "Authorization":`JWT ${props.token}`
+                      "Authorization":`Token ${props.token}`
     };
       let body = JSON.stringify(job);
       fetch(API+'job/', {headers, method: "POST", body})

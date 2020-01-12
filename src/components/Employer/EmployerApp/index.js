@@ -10,12 +10,14 @@ import EmployerPost from "../EmployerPost"
 import EmployerJobs from "../EmployerJobs"
 import EmployerViewJob from "../EmployerViewJob"
 import EmployerViewApplication from "../EmployerViewApplication"
+import SendMessage from "../../SendMessage";
+import EmployerInbox from "../../Inbox";
 
 
 const EmployerApp = (props) => {
 
       return (
-      <div>    
+      <div>
       <Nav drawerList={<EmployerDrawer/>}  user={props.user}  />
         <Switch>
           <Route exact path={ROUTES.EMPLOYER_APP} component= {EmployerLanding}/>
@@ -23,6 +25,8 @@ const EmployerApp = (props) => {
           <Route path={ROUTES.EMPLOYER_JOBS} component={EmployerJobs}/>
           <Route exact path={ROUTES.EMPLOYER_VIEW_JOB} component={EmployerViewJob}/>
           <Route exact path={ROUTES.EMPLOYER_VIEW_APPLICATION} component={EmployerViewApplication}/>
+          <Route exact path={ROUTES.EMPLOYER_SEND_MESSAGE} render={(props) => <SendMessage {...props}/>}/>
+          <Route exact path={ROUTES.EMPLOYER_INBOX} component={EmployerInbox}/>
           <Route component={NotFound} />
         </Switch>
       </div>

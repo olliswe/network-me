@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto'
 import 'react-quill/dist/quill.snow.css'
 import './index.css'
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
 
 

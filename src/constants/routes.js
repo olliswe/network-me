@@ -4,7 +4,11 @@ export const REGISTER = '/register'
 
 export const JOBSEEKER_APP = '/jobseeker'
 export const JOBSEEEKER_SEARCH = '/jobseeker/search'
-export const JOBSEEKER_APPLY = '/jobseeker/apply'
+export const JOBSEEKER_VIEW = '/jobseeker/job/:job_slug'
+export const JOBSEEKER_APPLY  = '/jobseeker/job/:job_slug/apply'
+export const JOBSEEKER_MY_APPS = '/jobseeker/my-applications'
+export const JOBSEEKER_SEND_MESSAGE = '/jobseeker/send'
+export const JOBSEEKER_INBOX = '/jobseeker/inbox'
 
 
 export const EMPLOYER_APP = '/employer'
@@ -12,3 +16,5 @@ export const EMPLOYER_POST = '/employer/post'
 export const EMPLOYER_JOBS = '/employer/jobs'
 export const EMPLOYER_VIEW_JOB = '/employer/job/:slug'
 export const EMPLOYER_VIEW_APPLICATION = '/employer/job/:job_slug/application/:slug'
+export const EMPLOYER_SEND_MESSAGE = '/employer/send'
+export const EMPLOYER_INBOX = '/employer/inbox'

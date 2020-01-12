@@ -21,7 +21,7 @@ const styles = theme => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundImage: 'url(https://source.unsplash.com/user/olliswe/likes/)',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -48,6 +48,7 @@ const styles = theme => ({
 const INITIAL_STATE = {
   email: "",
   password: "",
+  loading:false
 }
 
 class Login extends Component {
@@ -60,7 +61,9 @@ class Login extends Component {
   onSubmit = e => {
     e.preventDefault();
     this.props.login(this.state.email, this.state.password);
+    this.setState({loading:true})
   }
+
 
   render() {
 
@@ -168,6 +171,7 @@ const mapStateToProps = state => {
             console.log(state.auth.errors)
             if (Object.keys(state.auth.errors).length){
             return {error : state.auth.errors}}
+
       } 
     return {
       error:null,

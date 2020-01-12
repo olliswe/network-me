@@ -13,7 +13,6 @@ import renderHTML from 'react-render-html';
 import { Edit, Save, Close, OpenInNew } from '@material-ui/icons';
 import Fab from '@material-ui/core/Fab';
 import ReactQuill from 'react-quill'
-import './index.css'
 import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -46,7 +45,7 @@ const EmployerViewJob = (props) => {
     const getJobRequest = () => {
         setJobRequest({loading:true})
         let headers = {"Content-Type": "application/json",
-        "Authorization":`JWT ${props.token}`
+        "Authorization":`Token ${props.token}`
         };
         fetch(API+'employer/get_job/'+props.match.params.slug, {headers, method:"GET"})
         .then(res => res.json())
@@ -84,7 +83,7 @@ const EmployerViewJob = (props) => {
                     'description':description
         }
         let headers = {"Content-Type": "application/json",
-                        "Authorization":`JWT ${props.token}`
+                        "Authorization":`Token ${props.token}`
         };
         let body = JSON.stringify(job);
         fetch(API+'job/'+jobRequest.job.id+'/', {headers, method: "PATCH", body})
@@ -102,7 +101,7 @@ const EmployerViewJob = (props) => {
                     'manually_closed':true
         }
         let headers = {"Content-Type": "application/json",
-                        "Authorization":`JWT ${props.token}`
+                        "Authorization":`Token ${props.token}`
         };
         let body = JSON.stringify(job);
         fetch(API+'job/'+jobRequest.job.id+'/', {headers, method: "PATCH", body})
@@ -119,7 +118,7 @@ const EmployerViewJob = (props) => {
                     'manually_closed':false
         }
         let headers = {"Content-Type": "application/json",
-                        "Authorization":`JWT ${props.token}`
+                        "Authorization":`Token ${props.token}`
         };
         let body = JSON.stringify(job);
         fetch(API+'job/'+jobRequest.job.id+'/', {headers, method: "PATCH", body})
@@ -210,7 +209,7 @@ const EmployerViewJob = (props) => {
                                         />
                                 </MuiPickersUtilsProvider>
                         :
-                        <Typography variant='subtitle1'>{jobRequest.job.deadline}</Typography>
+                        <Typography variant='subtitle1'>{jobRequest.job.formatted_deadline}</Typography>
                     
                         }
 

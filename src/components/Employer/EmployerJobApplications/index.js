@@ -54,7 +54,7 @@ const EmployerJobApplications = (props) => {
     const getApplicationRequest = () =>{
         setApplicationRequest({loading:true});
         let headers = {"Content-Type": "application/json",
-        "Authorization":`JWT ${props.token}`
+        "Authorization":`Token ${props.token}`
         };
 
         fetch(API+'application/?job='+props.job.id, {headers, method:"GET"})
@@ -67,7 +67,7 @@ const EmployerJobApplications = (props) => {
 
     const changeApplicationStatus = (id, newStatus) => {
         let headers = {"Content-Type": "application/json",
-        "Authorization":`JWT ${props.token}`
+        "Authorization":`Token ${props.token}`
         };
         
         let update = {'employer_status':newStatus}

@@ -7,3 +7,93 @@ html,body{
 #root{
     height:100%
 }
+
+.outlined{
+    border:solid;
+    border-color:blue;
+    background: #dbe1ff
+}
+
+.MuiPaper-root.MuiPaper-elevation1.jobResultPaper.MuiPaper-rounded{
+    height:65vh;
+    width:90%;
+    padding:20px;
+    border:solid;
+    border-color:blue
+}
+
+
+.viewBox {
+    height: 70vh !important;
+}    
+
+
+.graypaper{
+    background:#f2f2f2 !important
+}
+
+
+.ql-editor {
+    overflow-y: scroll;
+    resize: vertical;
+    min-height: 25vh;
+  }
+
+
+.MuiPaper-root.MuiPaper-elevation1.jobResultPaper.MuiPaper-rounded {
+    position: relative;
+    height: 65vh;
+    width: 90%;
+    padding: 20px;
+    border: solid;
+    border-color: blue;
+}
+
+.MuiGrid-root.bottomBox.MuiGrid-container.MuiGrid-justify-xs-center {
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+}
+
+
+
+
+
+
+.MuiPaper-root.MuiPaper-elevation0.MuiStepper-root.MuiStepper-horizontal.MuiStepper-alternativeLabel {
+    background: none;
+}
+
+.bottomDiv {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.uploadDiv{
+    margin:30px
+}
+
+input[id^="uploader"]{
+    opacity:0 !important;
+}
+
+.inlineText{
+    display:inline-block !important
+}
+
+.MuiFab-root.Mui-disabled {
+    /* color: rgba(0, 0, 0, 0.26); */
+    /* box-shadow: none; */
+    /* background-color: rgba(0, 0, 0, 0.12); */
+}
+
+
+.MuiChip-root.appliedChip {
+    color: white;
+    background: green;
+}
+
+
+.read_false {
+    background: #90ee9047 !important;
+}
