@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import {auth} from "../../actions";
 import {connect} from "react-redux";
+import logo from '../../images/logo.svg'
 
 
 
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    textAlign:'center'
   },
   list: {
     width: 250,
@@ -69,8 +71,9 @@ function Nav(props) {
               {props.drawerList}
           </Drawer>
           </div>
-          <Typography variant="h6" className={classes.title}>
-          </Typography>
+          <div  className={classes.title}>
+            <img src={logo} style={{height:'40px'}}/>
+          </div>
             <div>
               <IconButton
                 aria-label="Account of current user"
@@ -96,8 +99,8 @@ function Nav(props) {
                 open={openMenu}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                {/*<MenuItem onClick={handleClose}>Profile</MenuItem>*/}
+                {/*<MenuItem onClick={handleClose}>My account</MenuItem>*/}
                 <MenuItem onClick={props.logout}>Logout</MenuItem>
               </Menu>
             </div>

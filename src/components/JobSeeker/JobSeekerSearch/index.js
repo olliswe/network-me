@@ -15,7 +15,7 @@ import {useKeyPress} from '../../../utils'
 
 const JobSeekerSearch = (props) => {
     
-    const [searchTerm, setSearchTerm] = useState(null)
+    const [searchTerm, setSearchTerm] = useState('')
     const [noJobs, setNoJobs] = useState(false)
     const [searchRequest, setSearchRequest] = useState(
         {
@@ -113,7 +113,12 @@ const JobSeekerSearch = (props) => {
                 </Paper>
             </Grid>
             <Grid item xs={2}>
-                <Fab variant='extended' size='large' color='primary' onClick={()=>setSearchTerm('')}> View all Jobs </Fab>
+                <Fab variant='extended' size='large' color='primary'
+                     onClick={()=>{
+                         setSearchTerm('')
+                         getSearchResult('')
+                     }}
+                > View all Jobs </Fab>
             </Grid>
             <Grid item xs={12}>
                 <Divider variant="middle"/>

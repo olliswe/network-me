@@ -16,6 +16,7 @@ import EmployerApp from "../Employer/EmployerApp"
 import NotFound from "../Not Found";
 import Login from "../Login";
 import Register from "../Register"
+import Loading from "../Loading";
 
 
 let store = createStore(jobsApp, applyMiddleware(thunk));
@@ -31,7 +32,7 @@ class RootContainerComponent extends Component {
   JobSeekerRoute   = ({component: ChildComponent, ...rest}) => {
     return <Route {...rest} render={props => {
       if (this.props.auth.isLoading) {
-        return <em>Loading...</em>;
+        return <Loading/>;
       } else if (!this.props.auth.isAuthenticated || this.props.auth.role != ROLES.JOBSEEKER) {
         return <Redirect to={ROUTES.LOGIN} />;
       } else {
@@ -44,7 +45,7 @@ class RootContainerComponent extends Component {
   EmployerRoute   = ({component: ChildComponent, ...rest}) => {
     return <Route {...rest} render={props => {
       if (this.props.auth.isLoading) {
-        return <em>Loading...</em>;
+        return <Loading/>;
       } 
       else if (!this.props.auth.isAuthenticated || this.props.auth.role !== ROLES.EMPLOYER ) {
         return <Redirect to={ROUTES.LOGIN}/>;
@@ -61,7 +62,7 @@ class RootContainerComponent extends Component {
   LoginRegisterRoute   = ({component: ChildComponent, ...rest}) => {
     return <Route {...rest} render={props => {
       if (this.props.auth.isLoading) {
-        return <em>Loading...</em>;
+        return <Loading/>;
       } 
       else if (this.props.auth.isAuthenticated)  {
         console.log(this.props.auth.role)
@@ -90,6 +91,7 @@ class RootContainerComponent extends Component {
           <EmployerRoute path={ROUTES.EMPLOYER_APP} component={EmployerApp}/>
           <LoginRegisterRoute exact path={ROUTES.REGISTER} component={Register} />
           <LoginRegisterRoute exact path={ROUTES.LOGIN} component={Login} />
+          <Route path='/' render={()=><Redirect to={ROUTES.LOGIN}/>}/>
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {useState, Fragment, useEffect} from "react";
 import {connect} from "react-redux";
 import {Link, Redirect} from "react-router-dom";
 import {auth} from "../../actions";
@@ -18,6 +18,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 
@@ -54,68 +55,68 @@ const INITIAL_STATE = {
   category:'1',
   firstName:'',
   lastName:'',
-  organization:''
+  organization:'',
+  loading:false
   };
 
 
-class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {...INITIAL_STATE}
-  }
+function Register (props) {
 
-  onChange = event => {
-    this.setState({[event.target.name]:event.target.value});
-    this.state.category === '1' 
-    ? this.setState({organization:''})
-    : this.setState({firstName:'', lastName:''});
-    }
+  const [state, setState] = useState(INITIAL_STATE)
 
 
-  onSubmit = event => {
-    event.preventDefault();
-    this.props.register(this.state.email, 
-                        this.state.passwordOne, 
-                        this.state.firstName,
-                        this.state.lastName,
-                        this.state.organization,
-                        this.state.category
-                        );
-                        console.log('submit!')
-  }
-
-  render() {
-
-    if (this.props.isAuthenticated) {
-      console.log(this.props)
-      console.log(this.state)
-      if(this.props.user.category=="1"){ 
-      return <Redirect to="/jobseeker" /> }
-      if(this.props.user.category=="2"){
-      return <Redirect to="/employer"/>}
+  useEffect(()=>{
+    if (props.isAuthenticated) {
+      if(props.user.category=="1"){
+        return <Redirect to="/jobseeker" /> }
+      if(props.user.category=="2"){
+        return <Redirect to="/employer"/>}
       return <Redirect to="/"/>
     }
+    if (props.error){
+      setState({...state,loading:false})
+    }
 
-    const {classes} = this.props
+  }, [props])
 
-    const {
-     email,
-     passwordOne,
-     passwordTwo,
-     category,
-     firstName,
-     lastName,
-     organization
-        } = this.state
+  const onChange = event => {
+    if(event.target.name === 'category') {
+      event.target.value === '1'
+          ? setState({...state, category:'1', organization: ''})
+          : setState({...state, category:'2', firstName: '', lastName: ''});
+    }
+    else{
+      setState({
+            ...state,
+            [event.target.name]:event.target.value
+          }
+      );
+    }
+    }
 
-    const isInvalid =
-        (passwordOne !== passwordTwo ||
-        passwordOne === '' ||
-        email === '') ||
-        (category === "1" ? firstName==='' || lastName ==='' : organization==='') 
-        
 
-        
+  const onSubmit = event => {
+    event.preventDefault();
+    props.register(state.email,
+                        state.passwordOne,
+                        state.firstName,
+                        state.lastName,
+                        state.organization,
+                        state.category
+                        );
+    setState({...state, loading:true})
+  }
+
+
+  const {classes} = props
+
+  const isInvalid =
+      (state.passwordOne !== state.passwordTwo ||
+          state.passwordOne === '' ||
+          state.email === '') ||
+      (state.category === "1" ? state.firstName==='' || state.lastName ==='' : state.organization==='')
+
+
         
 
     return (
@@ -129,7 +130,7 @@ class Register extends Component {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form}  onSubmit={this.onSubmit}>
+        <form className={classes.form}  onSubmit={onSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
             <FormControl component="fieldset" className={classes.formControl}>
@@ -138,15 +139,15 @@ class Register extends Component {
                       aria-label="Category"
                       name="category"
                       className={classes.group}
-                      value={category}
-                      onChange={this.onChange}
+                      value={state.category}
+                      onChange={onChange}
                     >
                     <FormControlLabel value="1" control={<Radio />} label="Job Seeker" />
                     <FormControlLabel value="2" control={<Radio />} label="Employer" />
                 </RadioGroup>
              </FormControl>
             </Grid>
-            {category === "1" ? 
+            {state.category === "1" ?
             <Fragment>  
              <Grid item xs={12} sm={6}>
               <TextField
@@ -158,8 +159,8 @@ class Register extends Component {
                 id="firstName"
                 label="First Name"
                 autoFocus
-                value={firstName}
-                onChange={this.onChange}
+                value={state.firstName}
+                onChange={onChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -171,8 +172,8 @@ class Register extends Component {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                value = {lastName}
-                onChange = {this.onChange}
+                value = {state.lastName}
+                onChange = {onChange}
                 
               />
             </Grid>
@@ -185,8 +186,8 @@ class Register extends Component {
               id="organization"
               label="Organization"
               name="organization"
-              value = {organization}
-              onChange = {this.onChange}
+              value = {state.organization}
+              onChange = {onChange}
             />
             </Grid>
             }
@@ -198,8 +199,8 @@ class Register extends Component {
                 id="email"
                 label="Email Address"
                 name="email"
-                value = {email}
-                onChange = {this.onChange}
+                value = {state.email}
+                onChange = {onChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -211,8 +212,8 @@ class Register extends Component {
                 label="Password"
                 type="password"
                 id="passwordOne"
-                value = {passwordOne}
-                onChange = {this.onChange}               
+                value = {state.passwordOne}
+                onChange = {onChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -225,8 +226,8 @@ class Register extends Component {
                 type="password"
                 id="passwordTwo"
                 autoComplete="current-password"
-                value = {passwordTwo}
-                onChange = {this.onChange}               
+                value = {state.passwordTwo}
+                onChange = {onChange}
               />
             </Grid>
           </Grid>
@@ -236,13 +237,17 @@ class Register extends Component {
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled = {isInvalid}
+            disabled = {isInvalid || state.loading}
           >
-            Sign Up
+            {state.loading ?
+                <CircularProgress />
+                :
+            'Sign Up'
+            }
           </Button>
-          {this.props.error &&
+          {props.error &&
             <Grid>
-              <Typography variant="body1" align="center"> Error: {this.props.error.email}</Typography>
+              <Typography variant="body1" align="center"> Error: {props.error.email}</Typography>
             </Grid>
             }
           <Grid container justify="flex-end">
@@ -256,37 +261,12 @@ class Register extends Component {
       </div>
        <Box mt={5}>
             <Typography variant="body2" align="center">
-              Made with love in Salone
+              Made ❤️ with  in 🇸🇱
             </Typography>
         </Box>
     </Container>
 
-      // <form onSubmit={this.onSubmit}>
-      //         <input
-      //         name="email"
-      //         value={email}
-      //         onChange={this.onChange}
-      //         type="text"
-      //         placeholder="Email Address"
-      //         />
-      //         <input
-      //         name="passwordOne"
-      //         value={passwordOne}
-      //         onChange={this.onChange}
-      //         type="password"
-      //         placeholder="Password"
-      //         />
-      //         <input
-      //         name="passwordTwo"
-      //         value={passwordTwo}
-      //         onChange={this.onChange}
-      //         type="password"
-      //         placeholder="Confirm Password"
-      //         />
-      //         <button type="submit" disabled={isInvalid}>Register</button>
-      // </form>
     );
-  }
 }
 
 

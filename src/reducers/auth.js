@@ -2,7 +2,7 @@ import * as ROLES from '../constants/roles'
 
 const initialState = {
     token: localStorage.getItem("token"),
-    isAuthenticated: null,
+    isAuthenticated: false,
     role:null,
     isLoading: true,
     user: null,
@@ -25,6 +25,9 @@ export default function auth(state=initialState, action) {
     switch (action.type) {
         case 'USER_LOADING':
             return {...state, isLoading: true};
+
+        case 'NEW_USER':
+            return {...state, isLoading: false};
 
         case 'USER_LOADED':
             return {...state, isAuthenticated: true, role: rolesHelper(action.user.category), isLoading: false, user: action.user};
