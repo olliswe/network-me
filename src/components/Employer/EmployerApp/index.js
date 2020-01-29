@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect} from 'react';
 import {Route, Switch,} from 'react-router-dom';
 import * as ROUTES from '../../../constants/routes'
 import EmployerLanding from '../EmployerLanding'
@@ -12,9 +12,18 @@ import EmployerViewJob from "../EmployerViewJob"
 import EmployerViewApplication from "../EmployerViewApplication"
 import SendMessage from "../../SendMessage";
 import EmployerInbox from "../../Inbox";
+import {auth} from "../../../actions";
 
 
 const EmployerApp = (props) => {
+
+
+
+  useEffect(() => {
+    if (props.next){
+      props.clearRedirect()
+    }
+  }, []);
 
       return (
       <div>
@@ -38,9 +47,18 @@ const EmployerApp = (props) => {
   const mapStateToProps = state => {
     return {
       user: state.auth.user,
+      next:state.auth.next
     }
   }
+const mapDispatchToProps = dispatch => {
+  return {
+    clearRedirect: ()=>{
+      return dispatch(auth.clear_redirect())
+
+    }
+  }
+}
 
 
 
-  export default connect(mapStateToProps, null, null)(EmployerApp)
+  export default connect(mapStateToProps, mapDispatchToProps)(EmployerApp)

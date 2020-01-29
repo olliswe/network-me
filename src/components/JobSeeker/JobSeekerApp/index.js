@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import {Route, Switch,} from 'react-router-dom';
 import * as ROUTES from '../../../constants/routes'
 import JobSeekerLanding from '../JobSeekerLanding'
@@ -12,10 +12,17 @@ import JobSeekerViewJob from "../JobSeekerViewJob"
 import MyApplications from "../JobSeekerMyApplications";
 import SendMessage from "../../SendMessage";
 import EmployerInbox from "../../Inbox";
+import {auth} from "../../../actions";
 
 
 const JobSeekerApp = (props) => {
 
+
+  useEffect(() => {
+    if (props.next){
+      props.clearRedirect()
+    }
+  }, []);
 
 
       return (
@@ -39,9 +46,19 @@ const JobSeekerApp = (props) => {
   const mapStateToProps = state => {
     return {
       user: state.auth.user,
+      next:state.auth.next
     }
   }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    clearRedirect: ()=>{
+      return dispatch(auth.clear_redirect())
+
+    }
+  }
+}
 
 
-  export default connect(mapStateToProps, null, null)(JobSeekerApp)
+
+  export default connect(mapStateToProps, mapDispatchToProps)(JobSeekerApp)

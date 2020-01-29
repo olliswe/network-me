@@ -45,7 +45,7 @@ export const loadUser = () => {
 
 
 
-  export const login = (email, password) => {
+  export const login = (email, password, next) => {
     return (dispatch, getState) => {
       let headers = {"Content-Type": "application/json"};
       let body = JSON.stringify({'username':email, 'password':password});
@@ -64,7 +64,7 @@ export const loadUser = () => {
         })
         .then(res => {
           if (res.status === 200) {
-            dispatch({type: 'LOGIN_SUCCESSFUL', data: res.data });
+            dispatch({type: 'LOGIN_SUCCESSFUL', data: {...res.data, next:next} });
             return res.data;
           } else if (res.status === 403 || res.status === 401) {
             dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
@@ -78,11 +78,10 @@ export const loadUser = () => {
   }
 
 
-  export const register = (email, password, first_name, last_name, organization, category) => {
+  export const register = (email, password, first_name, last_name, organization, category, telephone_number, next) => {
     return (dispatch, getState) => {
       let headers = {"Content-Type": "application/json"};
-      console.log(first_name)
-      let body = JSON.stringify({email, password, first_name, last_name, organization, category});
+      let body = JSON.stringify({email, password, first_name, last_name, organization, category, telephone_number});
       console.log(body)
       return fetch(API+'accounts/users/', {headers, body, method: "POST"})
         .then(res => {
@@ -98,7 +97,7 @@ export const loadUser = () => {
         .then(res => {
           if (res.status === 200 | res.status === 201) {
             console.log('success!')
-            dispatch({type: 'REGISTRATION_SUCCESSFUL', data: res.data });
+            dispatch({type: 'REGISTRATION_SUCCESSFUL', data: {...res.data, next:next} });
             return res.data;
           } else if (res.status === 403 || res.status === 401) {
             dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
@@ -142,3 +141,11 @@ export const loadUser = () => {
         })
     }
   }
+
+
+  export const clear_redirect = () => {
+    return (dispatch, getState) => {
+      dispatch({type:'REDIRECT_SUCCESSFUL'})
+    }
+  }
+

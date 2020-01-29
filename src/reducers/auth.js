@@ -7,6 +7,7 @@ const initialState = {
     isLoading: true,
     user: null,
     errors: {},
+    next:null
 };
 
 const rolesHelper = (category) => {
@@ -34,10 +35,11 @@ export default function auth(state=initialState, action) {
 
         case 'LOGIN_SUCCESSFUL':
             localStorage.setItem("token", action.data.key);
-            return {...state, user:action.data.user, token:action.data.key, isAuthenticated: true, role: rolesHelper(action.data.user.category), isLoading: false, errors: null};
+            return {...state, user:action.data.user, token:action.data.key, isAuthenticated: true, role: rolesHelper(action.data.user.category), isLoading: false, errors: null, next:action.data.next};
         case 'REGISTRATION_SUCCESSFUL':
             localStorage.setItem("token", action.data.key);
-            return {...state, user:action.data.user, token:action.data.key, isAuthenticated: true, role: rolesHelper(action.data.user.category), isLoading: false, errors: null};
+            console.log(action.data)
+            return {...state, user:action.data.user, token:action.data.key, isAuthenticated: true, role: rolesHelper(action.data.user.category), isLoading: false, errors: null, next:action.data.next};
 
         case 'AUTHENTICATION_ERROR':
             return{errors:action.data}
@@ -49,6 +51,9 @@ export default function auth(state=initialState, action) {
             localStorage.removeItem("token");
             return {...state, errors: action.data, token: null, user: null, role:null,
                 isAuthenticated: false, isLoading: false};
+
+        case 'REDIRECT_SUCCESSFUL':
+            return {...state, next:null}
 
         default:
             return state;

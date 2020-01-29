@@ -1,6 +1,6 @@
 import React, {useState, Fragment, useEffect} from "react";
 import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Redirect, withRouter} from "react-router-dom";
 import {auth} from "../../actions";
 
 import Avatar from '@material-ui/core/Avatar';
@@ -19,7 +19,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import {compose} from 'redux'
 
 
 const styles = theme => ({
@@ -56,6 +56,7 @@ const INITIAL_STATE = {
   firstName:'',
   lastName:'',
   organization:'',
+  telephone_number:'',
   loading:false
   };
 
@@ -97,13 +98,28 @@ function Register (props) {
 
   const onSubmit = event => {
     event.preventDefault();
-    props.register(state.email,
-                        state.passwordOne,
-                        state.firstName,
-                        state.lastName,
-                        state.organization,
-                        state.category
-                        );
+    if (props.location.state && props.location.state.next) {
+      console.log('next there!')
+      props.register(state.email,
+          state.passwordOne,
+          state.firstName,
+          state.lastName,
+          state.organization,
+          state.category,
+          state.telephone_number,
+          props.location.state.next
+      );
+    }
+    else{
+      props.register(state.email,
+          state.passwordOne,
+          state.firstName,
+          state.lastName,
+          state.organization,
+          state.category,
+          state.telephone_number
+      );
+    }
     setState({...state, loading:true})
   }
 
@@ -230,6 +246,18 @@ function Register (props) {
                 onChange = {onChange}
               />
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="telephone_number"
+                  label="Telephone Number"
+                  name="telephone_number"
+                  value = {state.telephone_number}
+                  onChange = {onChange}
+              />
+            </Grid>
           </Grid>
           <Button
             type="submit"
@@ -287,9 +315,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    register: (email, password, firstName, lastName, organization, category) => 
-    dispatch(auth.register(email, password, firstName, lastName, organization, category)),
+    register: (email, password, firstName, lastName, organization, category, telephone_number, next) =>
+    dispatch(auth.register(email, password, firstName, lastName, organization, category, telephone_number, next)),
   };
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Register));
+export default compose(withRouter,withStyles(styles))((connect(mapStateToProps, mapDispatchToProps)(Register)));

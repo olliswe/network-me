@@ -2,7 +2,7 @@
 import React from "react";
 import {connect} from "react-redux";
 
-import {Link, Redirect} from "react-router-dom";
+import {Link, Redirect, withRouter} from "react-router-dom";
 import {auth} from '../../actions'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -61,7 +61,12 @@ function Login (props) {
 
     const onSubmit = e => {
       e.preventDefault();
-      props.login(email, password);
+      if (props.location.state && props.location.state.next){
+        props.login(email, password, props.location.state.next);
+      }
+      else{
+        props.login(email, password);
+      }
       setLoading(true)
     }
 
@@ -79,6 +84,8 @@ function Login (props) {
       }
 
     }, [props])
+
+
 
     const {classes} = props;
 
@@ -153,7 +160,11 @@ function Login (props) {
                 </a>
               </Grid>
               <Grid item>
-                <Link to="/register" variant="body2">
+                <Link to={{
+                  pathname:"/register",
+                  state: { next: props.location.state.next }
+                }}
+                      variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -185,10 +196,10 @@ const mapStateToProps = state => {
   
   const mapDispatchToProps = dispatch => {
     return {
-      login: (email, password) => {
-        return dispatch(auth.login(email, password));
+      login: (email, password, next) => {
+        return dispatch(auth.login(email, password, next));
       }
     };
   }
   
-  export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login));
+  export default withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login)));

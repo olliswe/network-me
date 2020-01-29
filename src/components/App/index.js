@@ -33,9 +33,17 @@ class RootContainerComponent extends Component {
     return <Route {...rest} render={props => {
       if (this.props.auth.isLoading) {
         return <Loading/>;
-      } else if (!this.props.auth.isAuthenticated || this.props.auth.role != ROLES.JOBSEEKER) {
-        return <Redirect to={ROUTES.LOGIN} />;
-      } else {
+      } else if (!this.props.auth.isAuthenticated) {
+        return <Redirect to={{
+              pathname: ROUTES.LOGIN,
+              state: { next: props.location.pathname }
+            }}
+        />;
+      }
+      else if(this.props.auth.role != ROLES.JOBSEEKER){
+        return <Redirect to={ROUTES.LOGIN}/>;
+      }
+      else {
         return <ChildComponent {...props} />
       }
     }} /> 
@@ -48,7 +56,10 @@ class RootContainerComponent extends Component {
         return <Loading/>;
       } 
       else if (!this.props.auth.isAuthenticated || this.props.auth.role !== ROLES.EMPLOYER ) {
-        return <Redirect to={ROUTES.LOGIN}/>;
+        return <Redirect to={{
+          pathname: ROUTES.LOGIN,
+          state: { next: props.location.pathname }
+        }}/>;
       } 
       else {
         return <ChildComponent {...props} />
@@ -65,13 +76,28 @@ class RootContainerComponent extends Component {
         return <Loading/>;
       } 
       else if (this.props.auth.isAuthenticated)  {
-        console.log(this.props.auth.role)
-        if(this.props.auth.role === ROLES.JOBSEEKER){ 
-          return <Redirect to={ROUTES.JOBSEEKER_APP} /> }
-        if(this.props.auth.role === ROLES.EMPLOYER){
-          return <Redirect to={ROUTES.EMPLOYER_APP}/>}
-          
-          return <Redirect to={ROUTES.LANDING}/>
+        console.log(this.props.auth)
+        if (this.props.auth && this.props.auth.next) {
+          if (this.props.auth.role === ROLES.JOBSEEKER && this.props.auth.next.includes('jobseeker')) {
+            console.log('jobseeker')
+            return <Redirect to={this.props.auth.next}/>
+          }
+          if (this.props.auth.role === ROLES.EMPLOYER && this.props.auth.next.includes('employer')) {
+            console.log('employer')
+            return <Redirect to={this.props.auth.next}/>
+          }
+        }
+        if (this.props.auth.role === ROLES.JOBSEEKER) {
+          return <Redirect to={ROUTES.JOBSEEKER_APP}/>
+        }
+        if (this.props.auth.role === ROLES.EMPLOYER) {
+          return <Redirect to={ROUTES.EMPLOYER_APP}/>
+        }
+
+
+
+        return <Redirect to={ROUTES.LANDING}/>
+
       }
       else{
         return <ChildComponent {...props} />
@@ -108,7 +134,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadUser: () => {
-      return dispatch(auth.loadUser());
+      return dispatch(auth.loadUser()); },
+    clearRedirect: ()=>{
+      return dispatch(auth.clear_redirect())
+
     }
   }
 }
