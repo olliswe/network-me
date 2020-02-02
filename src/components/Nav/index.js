@@ -11,7 +11,9 @@ import Menu from '@material-ui/core/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import {auth} from "../../actions";
 import {connect} from "react-redux";
-
+import logo from '../../images/logo.svg'
+import {Link, withRouter} from 'react-router-dom'
+import * as ROUTES from '../../constants/routes'
 
 
 
@@ -24,6 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    textAlign:'center'
   },
   list: {
     width: 250,
@@ -69,8 +72,11 @@ function Nav(props) {
               {props.drawerList}
           </Drawer>
           </div>
-          <Typography variant="h6" className={classes.title}>
-          </Typography>
+          <div  className={classes.title}>
+          <Link to='/'>
+            <img src={logo} style={{height:'40px'}}/>
+          </Link>
+          </div>
             <div>
               <IconButton
                 aria-label="Account of current user"
@@ -96,8 +102,7 @@ function Nav(props) {
                 open={openMenu}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={()=>props.history.push(ROUTES.PROFILE)}>Profile</MenuItem>
                 <MenuItem onClick={props.logout}>Logout</MenuItem>
               </Menu>
             </div>
@@ -114,4 +119,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Nav)
+export default withRouter(connect(null, mapDispatchToProps)(Nav))

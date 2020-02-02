@@ -8,8 +8,6 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ThemeProvider } from '@material-ui/styles';
-import renderHTML from 'react-render-html';
 import { Edit, Save, Close, OpenInNew } from '@material-ui/icons';
 import Fab from '@material-ui/core/Fab';
 import ReactQuill from 'react-quill'
@@ -174,7 +172,7 @@ const EmployerViewJob = (props) => {
                             {jobRequest.job.manually_closed ?
                             <Fab variant='extended' onClick={handleReopen} disabled={jobRequest.job.timed_out}>  <Box>Reopen Job</Box>&nbsp;  <OpenInNew color="white" style={{ fontSize: 30 }}/> </Fab>
                             :
-                            <Fab variant='extended' color='secondary' onClick={handleClose} disabled={jobRequest.job.timed_out}>  <Box>Close Job</Box>&nbsp;  <Close color="white" style={{ fontSize: 30 }}/> </Fab>                        
+                            <Fab variant='extended' color='secondary' onClick={handleClose} disabled={jobRequest.job.timed_out}>  <Box>Close Job</Box>&nbsp;  <Close color="white" style={{ fontSize: 30 }}/> </Fab>
                             }
 
                             {editing ? 

@@ -26,7 +26,7 @@ const EmployerJobCard = (props) => {
               </Typography>
               <Typography variant="body1" component="p">
                 <br/>
-                Deadline: {props.job.deadline}
+                Deadline: {props.job.formatted_deadline}
               </Typography>
               <Typography variant="body1" component="p">
                 {props.job.applications.length}&nbsp;Applicant(s)

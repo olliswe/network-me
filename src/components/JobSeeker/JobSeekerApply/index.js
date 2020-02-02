@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {auth} from "../../../actions";
 import {connect} from "react-redux"
 import {withRouter} from 'react-router-dom'
 import {Paper, Container,Grid, Box, Typography, Stepper, Step, StepLabel, Fab, CircularProgress, Button} from '@material-ui/core/';
@@ -9,8 +8,8 @@ import ReactQuill from 'react-quill'
 import {API} from '../../../constants/api'
 import UploadSupportingDocs from './upload'
 import ReviewSubmit from './review'
-import {act} from "react-dom/test-utils";
 import axios from 'axios'
+import * as ROUTES from '../../../constants/routes'
 
 
 
@@ -165,7 +164,9 @@ const JobSeekerApply = (props) => {
                       sm={6}
                       justify="center"
                       >
-                          <Button>
+                          <Button
+                          onClick={()=>props.history.push(ROUTES.JOBSEEKER_MY_APPS) }
+                          >
                               View my {applicationRequest.draft ? 'Drafts' : 'Applications'}
                           </Button>
                       </Grid>
@@ -175,7 +176,9 @@ const JobSeekerApply = (props) => {
                           sm={6}
                           justify="center"
                       >
-                          <Button>
+                          <Button
+                              onClick={()=>props.history.push(ROUTES.JOBSEEEKER_SEARCH) }
+                          >
                               Search for more Jobs
                           </Button>
                       </Grid>
@@ -239,7 +242,7 @@ const JobSeekerApply = (props) => {
                               <br/>
                               <br/>
                               <br/>
-                              <Fab variant="extended" onClick={handleSave} disabled={coverLetter===''}>Save & Continue Later</Fab>
+                              {/*<Fab variant="extended" onClick={handleSave} disabled={coverLetter===''}>Save & Continue Later</Fab>*/}
                           </div>
                       </Box>
           }

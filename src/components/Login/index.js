@@ -1,8 +1,8 @@
 
-import React, {Component} from "react";
+import React from "react";
 import {connect} from "react-redux";
 
-import {Link, Redirect} from "react-router-dom";
+import {Link, Redirect, withRouter} from "react-router-dom";
 import {auth} from '../../actions'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -14,6 +14,8 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 
 const styles = theme => ({
@@ -51,40 +53,47 @@ const INITIAL_STATE = {
   loading:false
 }
 
-class Login extends Component {
+function Login (props) {
 
-    constructor(props) {
-    super(props);
-    this.state = {...INITIAL_STATE}
-  }
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
+    const [loading, setLoading] = React.useState(false)
 
-  onSubmit = e => {
-    e.preventDefault();
-    this.props.login(this.state.email, this.state.password);
-    this.setState({loading:true})
-  }
+    const onSubmit = e => {
+      e.preventDefault();
+      if (props.location.state && props.location.state.next){
+        props.login(email, password, props.location.state.next);
+      }
+      else{
+        props.login(email, password);
+      }
+      setLoading(true)
+    }
 
 
-  render() {
+    React.useEffect(()=>{
+      if (props.isAuthenticated) {
+            if(props.user.category=="1"){
+              return <Redirect to="/jobseeker" /> }
+            if(props.user.category=="2"){
+              return <Redirect to="/employer"/>}
+            return <Redirect to="/"/>
+          }
+      if (props.error){
+        setLoading(false)
+      }
 
-    const {classes} = this.props
+    }, [props])
 
-    const {
-      email,
-      password
-    } = this.state
+
+
+    const {classes} = props;
 
     const isInvalid = password === '' || email === ''
 
-    if (this.props.isAuthenticated) {
-        console.log(this.props)
-        console.log(this.state)
-        if(this.props.user.category=="1"){ 
-        return <Redirect to="/jobseeker" /> }
-        if(this.props.user.category=="2"){
-        return <Redirect to="/employer"/>}
-        return <Redirect to="/"/>
-      }
+
+
+
     return (
       <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -100,7 +109,7 @@ class Login extends Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} onSubmit={this.onSubmit}>
+          <form className={classes.form} onSubmit={onSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -111,7 +120,7 @@ class Login extends Component {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange = {e => this.setState({email: e.target.value})}
+              onChange = {e => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -123,7 +132,7 @@ class Login extends Component {
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange = {e => this.setState({password: e.target.value})}
+              onChange = {e => setPassword(e.target.value)}
             />
             <Button
               type="submit"
@@ -131,44 +140,56 @@ class Login extends Component {
               variant="contained"
               color="primary"
               className={classes.submit}
-              disabled={isInvalid}
+              disabled={isInvalid || loading}
             >
-              Sign In
+              {loading ?
+                  <CircularProgress />
+                  :
+                  'Sign In'
+              }
             </Button>
-            {this.props.error &&
+            {props.error &&
             <Grid>
-              <Typography variant="body1" align="center"> {this.props.error.non_field_errors}</Typography>
+              <Typography variant="body1" align="center"> {props.error.non_field_errors}</Typography>
             </Grid>
             }
             <Grid container>
               <Grid item xs>
-                <Link to="#" variant="body2">
+                <a href="https://networkmesl-api.herokuapp.com/accounts/services/password_reset/" variant="body2">
                   Forgot password?
-                </Link>
+                </a>
               </Grid>
               <Grid item>
-                <Link to="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                {!!props.location.state && !!props.location.state.next ?
+                    <Link to={{
+                      pathname: "/register",
+                      state: {next: props.location.state.next}
+                    }}
+                          variant="body2">
+                      Don't have an account? Sign Up
+                    </Link>
+                    :
+                    <Link to='/register'
+                          variant="body2">
+                      Don't have an account? Sign Up
+                    </Link>
+                }
               </Grid>
             </Grid>
             <Box mt={5}>
             <Typography variant="body2" align="center">
-              Made with love in Salone
+              Made ❤️ with  in 🇸🇱
             </Typography>
             </Box>
           </form>
         </div>
       </Grid>
     </Grid>
-  );
-    
-  }
+  )
 }
 
 const mapStateToProps = state => { 
     if (state.auth.errors) {
-            console.log(state.auth.errors)
             if (Object.keys(state.auth.errors).length){
             return {error : state.auth.errors}}
 
@@ -182,10 +203,10 @@ const mapStateToProps = state => {
   
   const mapDispatchToProps = dispatch => {
     return {
-      login: (email, password) => {
-        return dispatch(auth.login(email, password));
+      login: (email, password, next) => {
+        return dispatch(auth.login(email, password, next));
       }
     };
   }
   
-  export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login));
+  export default withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login)));

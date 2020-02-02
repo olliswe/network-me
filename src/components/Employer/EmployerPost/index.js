@@ -21,7 +21,8 @@ import {
 } from '@material-ui/pickers';
 import moment from 'moment'
 import {API} from '../../../constants/api'
-
+import * as ROUTES from "../../../constants/routes";
+import {withRouter} from 'react-router-dom'
 
 
   
@@ -35,6 +36,7 @@ const EmployerPost = (props) => {
     const[loading, setLoading]=useState(false)
     const[success, setSuccess]=useState(false)
     const[submissionError, setSubmissionError]=useState(null)
+    const [submittedJobSlug, setSubmittedJobSlug] = useState(null)
   
 
     const dateError = (deadline < today)
@@ -72,7 +74,10 @@ const EmployerPost = (props) => {
       fetch(API+'job/', {headers, method: "POST", body})
         .then(res => res.json())
         .catch(error => setSubmissionError('An issue was encountered - please try again later'))
-        .then(res => setSuccess(true))
+        .then(res => {
+            setSubmittedJobSlug(res.slug)
+            setSuccess(true)
+        })
     }
 
     
@@ -99,10 +104,10 @@ const EmployerPost = (props) => {
         <Typography>The job "{title}" was successfully submitted to our portal</Typography>
       </Grid>
       <Grid item xs={12} sm={6}  style={{textAlign:'center'}}>
-        <Fab variant='extended' color='primary'><Box style={{width:160}}>View Job</Box></Fab>
+        <Fab variant='extended' color='primary'><Box style={{width:160}} onClick={()=>props.history.push(`${'/employer/job'}/${submittedJobSlug}`)}>View Job</Box></Fab>
       </Grid>
       <Grid item xs={12} sm={6} style={{textAlign:'center'}}>
-        <Fab variant='extended' color='primary'><Box style={{width:160}}>Post Another Job</Box></Fab>
+        <Fab variant='extended' color='primary' onClick={()=>props.history.push(ROUTES.EMPLOYER_JOBS)}><Box style={{width:160}}>Post Another Job</Box></Fab>
       </Grid>
     </Grid>
     )}
@@ -199,4 +204,4 @@ const mapStateToProps = state => {
   }
 
 
-export default connect(mapStateToProps)(EmployerPost)
+export default withRouter(connect(mapStateToProps)(EmployerPost))
