@@ -6,6 +6,7 @@ export const loadUser = () => {
     dispatch({type: "USER_LOADING"});
 
     const token = getState().auth.token;
+    console.log(token)
     let headers = {
       "Content-Type": "application/json",
     };
@@ -38,19 +39,22 @@ export const loadUser = () => {
     }
     else{
       dispatch({type: "NEW_USER"});
-
     }
     }
   }
 
 
 
+  export const updateUser  = (data) => {
+  return (dispatch, getState)=>{
+    dispatch({type:'UPDATE_USER', data:data})
+  }
+  }
+
   export const login = (email, password, next) => {
     return (dispatch, getState) => {
       let headers = {"Content-Type": "application/json"};
       let body = JSON.stringify({'username':email, 'password':password});
-      console.log(body)
-  
       return fetch(API+"api-token-auth/", {headers, body, method: "POST"})
         .then(res => {
           if (res.status < 500) {

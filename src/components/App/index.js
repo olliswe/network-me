@@ -17,6 +17,7 @@ import NotFound from "../Not Found";
 import Login from "../Login";
 import Register from "../Register"
 import Loading from "../Loading";
+import Profile from "../Profile";
 
 
 let store = createStore(jobsApp, applyMiddleware(thunk));
@@ -27,6 +28,23 @@ class RootContainerComponent extends Component {
     this.props.loadUser();
   }
 
+
+  AuthRoute   = ({component: ChildComponent, ...rest}) => {
+    return <Route {...rest} render={props => {
+      if (this.props.auth.isLoading) {
+        return <Loading/>;
+      } else if (!this.props.auth.isAuthenticated) {
+        return <Redirect to={{
+          pathname: ROUTES.LOGIN,
+          state: { next: props.location.pathname }
+        }}
+        />;
+      }
+      else {
+        return <ChildComponent {...props} />
+      }
+    }} />
+  }
 
   // A route which is only accessible by a Job Seeker
   JobSeekerRoute   = ({component: ChildComponent, ...rest}) => {
@@ -109,7 +127,7 @@ class RootContainerComponent extends Component {
 
 
   render() {
-    let {JobSeekerRoute, EmployerRoute, LoginRegisterRoute } = this;
+    let {JobSeekerRoute, EmployerRoute, LoginRegisterRoute, AuthRoute } = this;
     return (
       <BrowserRouter>
         <Switch>
@@ -117,6 +135,7 @@ class RootContainerComponent extends Component {
           <EmployerRoute path={ROUTES.EMPLOYER_APP} component={EmployerApp}/>
           <LoginRegisterRoute exact path={ROUTES.REGISTER} component={Register} />
           <LoginRegisterRoute exact path={ROUTES.LOGIN} component={Login} />
+          <AuthRoute exact path={ROUTES.PROFILE} component={Profile}/>
           <Route path='/' render={()=><Redirect to={ROUTES.LOGIN}/>}/>
           <Route component={NotFound} />
         </Switch>

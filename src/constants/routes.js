@@ -1,6 +1,7 @@
 export const LANDING = '/'
 export const LOGIN = '/login'
 export const REGISTER = '/register'
+export const PROFILE = '/profile'
 
 export const JOBSEEKER_APP = '/jobseeker'
 export const JOBSEEEKER_SEARCH = '/jobseeker/search'

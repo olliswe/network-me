@@ -1,8 +1,8 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import {Typography, Paper, Container, Box, CircularProgress, Grid, Divider, Fab} from '@material-ui/core';
-import {API} from '../../../constants/api'
+import {API, GATSBY_SITE} from '../../../constants/api'
 import {connect} from "react-redux";
-
+import ShareButton from "../../ShareButton";
 
 
 const JobSeekerViewJob = (props) => {
@@ -11,6 +11,7 @@ const JobSeekerViewJob = (props) => {
         data:null,
         loading:true
     })
+
 
     const getJobRequest = () => {
         setJobRequest({loading:true})
@@ -51,7 +52,10 @@ const JobSeekerViewJob = (props) => {
                     </Grid>
                     :
                     <Box style={{padding:30}}>
-                        <Typography variant='h4'>{jobRequest.data.title}</Typography>
+                        <Grid container justify='space-between'>
+                            <Typography variant='h4'>{jobRequest.data.title}</Typography>
+                            <ShareButton url={GATSBY_SITE+'job?'+jobRequest.data.slug}/>
+                        </Grid>
                         <Typography variant='h5'>posted by <strong>{jobRequest.data.employer.organization}</strong> {jobRequest.data.timesince_post} ago </Typography>
                         <Divider variant="left"/>
                         <Typography dangerouslySetInnerHTML={{__html:jobRequest.data.description}} style={{marginTop:20, lineHeight:'1.5em'}}></Typography>

@@ -128,10 +128,12 @@ function Register (props) {
 
   const isInvalid =
       (state.passwordOne !== state.passwordTwo ||
+          state.telephone_number==='' ||
           state.passwordOne === '' ||
           state.email === '') ||
       (state.category === "1" ? state.firstName==='' || state.lastName ==='' : state.organization==='')
 
+  const passwordsDontMatch = state.passwordOne !== state.passwordTwo && state.passwordOne !== ''
 
         
 
@@ -273,6 +275,11 @@ function Register (props) {
             'Sign Up'
             }
           </Button>
+          {passwordsDontMatch &&
+          <Grid>
+            <Typography variant="body1" align="center"> The passwords do not match</Typography>
+          </Grid>
+          }
           {props.error &&
             <Grid>
               <Typography variant="body1" align="center"> Error: {props.error.email}</Typography>

@@ -160,13 +160,20 @@ function Login (props) {
                 </a>
               </Grid>
               <Grid item>
-                <Link to={{
-                  pathname:"/register",
-                  state: { next: props.location.state.next }
-                }}
-                      variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                {!!props.location.state && !!props.location.state.next ?
+                    <Link to={{
+                      pathname: "/register",
+                      state: {next: props.location.state.next}
+                    }}
+                          variant="body2">
+                      Don't have an account? Sign Up
+                    </Link>
+                    :
+                    <Link to='/register'
+                          variant="body2">
+                      Don't have an account? Sign Up
+                    </Link>
+                }
               </Grid>
             </Grid>
             <Box mt={5}>
