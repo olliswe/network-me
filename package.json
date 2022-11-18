@@ -24,7 +24,7 @@
     "react-render-html": "^0.6.0",
     "react-router-hash-link": "^1.2.2",
     "react-s3-uploader": "^4.8.0",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "react-scrollable-anchor": "^0.6.1",
     "react-share": "^4.0.1",
     "react-trello": "^2.2.2",
